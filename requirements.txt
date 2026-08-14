@@ -1,6 +1,8 @@
-fastapi
-uvicorn[standard]
-opencv-python
-mediapipe
-pyautogui
-websockets
+fastapi==0.133.1
+uvicorn[standard]==0.30.1
+opencv-python==4.10.1.26
+mediapipe==0.10.14
+pyautogui==0.9.54
+websockets==12.0
+numpy<2.0
+protobuf==4.25.3

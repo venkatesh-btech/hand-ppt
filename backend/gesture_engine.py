@@ -79,11 +79,8 @@ class GestureEngine:
 
         # Downscale for faster MediaPipe inference
         h, w = frame.shape[:2]
-        process_w, process_h = 240, 180
-        if w > process_w or h > process_h:
-            small = cv2.resize(frame, (process_w, process_h), interpolation=cv2.INTER_NEAREST)
-        else:
-            small = frame
+        process_w, process_h = 192, 144  # Smaller = faster processing
+        small = cv2.resize(frame, (process_w, process_h), interpolation=cv2.INTER_NEAREST)
 
         rgb = cv2.cvtColor(small, cv2.COLOR_BGR2RGB)
         rgb.flags.writeable = False          # small perf hint for MediaPipe
