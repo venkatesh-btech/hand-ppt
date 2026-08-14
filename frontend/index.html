@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Control your PowerPoint presentations using hand gestures via webcam and AI-powered hand tracking.">
+    <title>Hand Gesture PPT Controller</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖐️</text></svg>">
+</head>
+
+<body>
+    <div class="app-container">
+
+        <!-- ── Header ──────────────────────────── -->
+        <header class="header">
+            <div class="header-left">
+                <div class="header-icon">🖐️</div>
+                <h1>Gesture Controller <span>| PPT</span></h1>
+            </div>
+            <div class="header-center">
+                <div class="tech-badges">
+                    <span class="tech-badge opencv">OpenCV</span>
+                    <span class="tech-badge mediapipe">MediaPipe</span>
+                    <span class="tech-badge fastapi">FastAPI</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <span class="fps-badge" id="fpsBadge">0 FPS</span>
+                <div class="connection-badge" id="connectionBadge">
+                    <span class="connection-dot"></span>
+                    <span id="connectionText">Offline</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ── Main Content ────────────────────── -->
+        <div class="main-content">
+
+            <!-- Left: Camera + Stats -->
+            <div class="left-panel">
+                <div class="camera-card">
+                    <div class="camera-header">
+                        <span class="camera-title">📹 Live Feed</span>
+                        <div class="camera-header-right">
+                            <span class="live-dot" id="liveDot">● LIVE</span>
+                        </div>
+                    </div>
+                    <div class="camera-feed" id="cameraFeed">
+                        <canvas id="cameraCanvas"></canvas>
+                        <div class="camera-placeholder" id="cameraPlaceholder">
+                            <div class="scan-line"></div>
+                            <div class="big-icon">📷</div>
+                            <p>Initializing camera...</p>
+                        </div>
+                        <!-- Corner brackets for CV look -->
+                        <div class="cv-corner tl"></div>
+                        <div class="cv-corner tr"></div>
+                        <div class="cv-corner bl"></div>
+                        <div class="cv-corner br"></div>
+                    </div>
+                </div>
+
+                <!-- Stats Row below camera -->
+                <div class="stats-row">
+                    <div class="stat-pill">
+                        <span class="stat-pill-icon">⚡</span>
+                        <span class="stat-pill-value" id="statTotal">0</span>
+                        <span class="stat-pill-label">Gestures</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-pill-icon">🖐️</span>
+                        <span class="stat-pill-value" id="statFingers">—</span>
+                        <span class="stat-pill-label">Fingers</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-pill-icon">🎯</span>
+                        <span class="stat-pill-value" id="statFps">0</span>
+                        <span class="stat-pill-label">FPS</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+
+                <!-- Current Gesture -->
+                <div class="panel-card gesture-panel">
+                    <div class="panel-title">✋ Detected Gesture</div>
+                    <div class="gesture-display">
+                        <div class="gesture-ring" id="gestureRing">
+                            <div class="gesture-emoji" id="gestureEmoji">🖐️</div>
+                        </div>
+                        <div class="gesture-info">
+                            <div class="gesture-name" id="gestureName">Waiting...</div>
+                            <div class="gesture-detail" id="gestureDetail">Show hand to camera</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Log -->
+                <div class="panel-card log-panel">
+                    <div class="panel-title">📋 Action Log <span class="log-count" id="logCount">0</span></div>
+                    <div class="action-log" id="actionLog">
+                        <div class="log-empty">No actions yet</div>
+                    </div>
+                </div>
+
+                <!-- Gesture Guide -->
+                <div class="panel-card guide-panel">
+                    <div class="panel-title">📖 Gesture Guide</div>
+                    <div class="guide-grid">
+                        <div class="guide-chip next">✌️ R-2 → Next</div>
+                        <div class="guide-chip prev">✌️ L-2 → Prev</div>
+                        <div class="guide-chip home">🖐️ R-5 → Home</div>
+
+                    </div>
+                </div>
+
+                <!-- Camera Source -->
+                <div class="panel-card cam-panel">
+                    <div class="panel-title">📷 Camera</div>
+                    <div class="cam-switch">
+                        <button class="cam-btn active" id="btnLaptop">💻 Laptop</button>
+                        <button class="cam-btn" id="btnMobile">📱 Mobile</button>
+                    </div>
+                    <div class="mobile-url-input" id="mobileUrlInput" style="display:none;">
+                        <input type="text" id="cameraUrlField" placeholder="http://192.168.1.5:8080/video"
+                            spellcheck="false">
+                        <button class="cam-connect-btn" id="btnConnectCamera">Go</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>
