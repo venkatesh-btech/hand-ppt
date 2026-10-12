@@ -201,10 +201,14 @@ async def websocket_stream(ws: WebSocket):
 # ── Startup / Shutdown ───────────────────────────────────
 @app.on_event("shutdown")
 async def shutdown():
-    global camera
+    global camera, engine
     if camera and camera.isOpened():
         camera.release()
-    engine.release()
+    if engine is not None:
+        try:
+            engine.release()
+        except Exception as e:
+            print(f"[Engine] Shutdown cleanup warning: {e}")
 
 
 # ── Run ──────────────────────────────────────────────────

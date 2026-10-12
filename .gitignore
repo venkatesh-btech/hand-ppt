@@ -3,6 +3,7 @@ handppt_env/
 venv/
 env/
 .venv/
+.git-rewrite/
 
 # Python cache
 __pycache__/
